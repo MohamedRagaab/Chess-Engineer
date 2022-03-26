@@ -1,0 +1,47 @@
+.game{
+    width: 100%;
+    height: 100%;
+}
+.grid{
+    width: 720px;
+    height: 720px;
+    padding-left: 34%;
+    padding-right: 34%;
+    padding-top: 3%;
+}
+.black_box{
+    height: 60px;
+    width: 60px;
+    background-color: grey;
+    padding:0;
+    margin:0;
+    float: left;
+    font-size: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px; 
+}
+.white_box{
+    height: 60px;
+    width: 60px;
+    background-color: white;
+    padding:0;
+    margin:0;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px; 
+    font-size: 50px;
+}
+.border_box{
+    height: 60px;
+    width: 60px;
+    background-color: black;
+    padding:0;
+    margin:0;
+    float: left;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px; 
+}
