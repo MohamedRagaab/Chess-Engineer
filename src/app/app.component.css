@@ -1,5 +1,5 @@
 .game{
-    background-color: #43464B;
+    background-color: #1a1918;
     width: auto;
     top: 0;
     bottom: 0;
@@ -48,16 +48,42 @@
     vertical-align: middle;
     cursor: pointer;
 }
-.border_box{
+.border_box_horizntal{
     height: calc(100%/10);
     width: calc(100%/10);
-    background-color: black;
+    background-color: #272420;
     padding:0;
     margin:0;
     float: left;
     color: white;
     text-align: center;
     vertical-align: middle;
-    line-height: 60px; 
+    line-height: 450%; 
 
+}
+.border_box_vertical{
+    height: calc(100%/10);
+    width: calc(100%/10);
+    background-color: #272420;
+    padding:0;
+    margin:0;
+    float: left;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 450%; 
+
+}
+
+.border_box_special1{
+    border-top-left-radius: 30%;
+}
+.border_box_special2{
+    border-top-right-radius: 30%;
+}
+.border_box_special3{
+    border-bottom-left-radius: 30%;
+}
+.border_box_special4{
+    border-bottom-right-radius: 30%;
 }
