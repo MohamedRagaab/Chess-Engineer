@@ -4,7 +4,7 @@ It is a chess game written by TypeScript, Angular
 * TypeScript (Angular) 
 * C# (ASP.NET Core Web API)
 * SQL (Microsoft SQL Server)
-##🌟 Concepts
+## 🌟 Concepts
 * Object Oriented Programming (OOP)
 * Data Structure
 * Database Management System (DBMS)
