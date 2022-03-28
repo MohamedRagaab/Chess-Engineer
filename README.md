@@ -32,3 +32,4 @@ It is a chess game written by TypeScript, Angular
 <hr/>
 </div>
 
+> This software is licensed under MIT License, See [License](https://github.com/MohamedRagaab/Chess-Engineer/blob/main/LICENSE) for more information ©MohamedRagab.
