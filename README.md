@@ -4,6 +4,10 @@ It is a chess game written by TypeScript, Angular
 * TypeScript (Angular) 
 * C# (ASP.NET Core Web API)
 * SQL (Microsoft SQL Server)
+##🌟 Concepts
+* Object Oriented Programming (OOP)
+* Data Structure
+* Database Management System (DBMS)
 ## Features 🥇
 * You can play with computer (comming soon) -> Link: https://mohamedragaab.github.io/Chess-Engineer/
 * You can play online with a friend (comming soon)
