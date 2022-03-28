@@ -13,21 +13,19 @@ export class chessObj {
   _suggestedMoves:string[] = [];
   /* Getters ********************************************************************************/
   getSuggestedMoves(){
-    console.log(this._suggestedMoves);
     return this._suggestedMoves;
   }
   /* Suggested Moves ************************************************************************/
   suggestedMoves(){
-    console.log(this._name);
     this._name = this._name.slice(0, this._name.length - 1);
-    console.log(this._name);
     if(this._name == 'black-pawn'){
-      console.log(this._name);
       this.blackPawnMoves();
     }
     if(this._name == 'white-pawn'){
-      console.log(this._name);
       this.WhitePawnMoves();
+    }
+    if(this._name == 'black-Knight'){
+      this.blackKnightMoves();
     }
   }
   /* Pawn Moves ****************************************************************************/
@@ -39,6 +37,10 @@ export class chessObj {
       if(!(this._gameStatus.includes((this._location+1).toString()))){
         if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
         this._suggestedMoves.push((this._location+1).toString());
+      }
+      if(!(this._gameStatus.includes((this._location+2).toString()))){
+        if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
+        this._suggestedMoves.push((this._location+2).toString());
       }
       if((this._gameStatus.includes((this._location-9).toString()))){
         if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
@@ -59,6 +61,10 @@ export class chessObj {
       if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
       this._suggestedMoves.push((this._location-1).toString());
     }
+    if(!(this._gameStatus.includes((this._location-2).toString()))){
+      if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
+      this._suggestedMoves.push((this._location-2).toString());
+    }
     if((this._gameStatus.includes((this._location+9).toString()))){
       if((parseInt(second)<=8)&&(parseInt(second)>=1)&&(parseInt(first)<=8)&&(parseInt(first)>=1)) // check Constrain
       this._suggestedMoves.push((this._location+9).toString());
@@ -68,5 +74,12 @@ export class chessObj {
       this._suggestedMoves.push((this._location-11).toString());
     }
   }
+  
+
+  /* Knight Moves *******************************************************************************************************************/
+  blackKnightMoves(){
+    
+  }
 
 }
+

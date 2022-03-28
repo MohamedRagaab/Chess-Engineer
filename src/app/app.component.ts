@@ -12,6 +12,9 @@ export class AppComponent implements OnInit {
   gameStatus = new Map();
   chessBoard = new Map();
   gameStatusArr:string[] = [];
+  currentSelectedAndSuggestedBoxes:string[] = [];
+  oldBoxesBackgroundColor:string[] = [];
+  oldSelectedBoxCode:string[] = [''];
   _isClicked = false;
   ngOnInit(){
     this.initializeAllBox();
@@ -161,27 +164,63 @@ initializeAllBox(){
 }
 /* Click Box *************************************************************************************************************/
 boxClicked(code:string){
-  if(this.gameStatusArr.includes(code)){                                          // check box if it has chessObj
-    if(!this._isClicked){
-      this._isClicked = true;
-      let ChessBox = document.getElementById(code);                               // get the clicked box
-      ChessBox!.style.cssText = 'background-color:green;';                        // green the clicked box
+  if(this.gameStatusArr.includes(code)){
+    this.currentSelectedAndSuggestedBoxes.push(code);
       let _name = this.getByValue(this.gameStatus,code)!;                         // search for the name of the clicked chessObj
-      console.log(_name);
-      console.log(parseInt(code));
       let _chessOj = new chessObj(_name,parseInt(code),this.gameStatusArr);       // create chessObj
       _chessOj.suggestedMoves();      
-      _chessOj.getSuggestedMoves().forEach(function(__code){                      // returnd suggested boxes
-        console.log(__code);
-        let ChessBoxSugg = document.getElementById(__code);
-        ChessBoxSugg!.style.cssText = 'background-color:green;';
+      _chessOj.getSuggestedMoves().forEach(suggCode => {                          // returnd suggested boxes
+        this.currentSelectedAndSuggestedBoxes.push(suggCode);
       });
-    }else{
-      this._isClicked = false;
-      var ChessBox = document.getElementById(code);
-      ChessBox!.style.cssText = 'background-color:inherit;';
+     if(code != this.oldSelectedBoxCode[0]){ this._isClicked=true}else{this._isClicked=false}
+     if(this._isClicked){
+        this.currentSelectedAndSuggestedBoxes.forEach(box => {
+          let ChessBox = document.getElementById(box);
+          this.oldBoxesBackgroundColor.push(ChessBox!.style.backgroundColor);       // save backgroundColor
+        });
+      }
+      this.changeBackgroundColor(this.currentSelectedAndSuggestedBoxes);
+      this.currentSelectedAndSuggestedBoxes = [];
+
+  }
+}
+/* changeBackgroundColor function *****************************************************************************************************/
+changeBackgroundColor(currentSelecBoxes:string[]){
+  
+  if(currentSelecBoxes[0] != this.oldSelectedBoxCode[0]){                                                      // check the selected box is not the previous box
+    if((this.oldSelectedBoxCode[0]!='' )){                                                                     // clear Background Selected when change selection from box to another
+      this.removeDiv();
+      let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
+      ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor[0]+';';                     
+    }
+    currentSelecBoxes.forEach(code=>{                                                                         // mark the suggested boxes
+      if(code == currentSelecBoxes[0]){
+        let ChessBox = document.getElementById(code);
+        ChessBox!.style.cssText = 'background-color: #BACA2B;';
+      }else{
+        this.divInside(code);
+      }
+    });
+  }else{ // if we clicked the same box
+    let ChessBox = document.getElementById(currentSelecBoxes[0]);
+    console.log(ChessBox!.style.backgroundColor);
+    if(ChessBox!.style.backgroundColor=='rgb(186, 202, 43)'){               // check the status of the box if it is marked
+      this.removeDiv();
+      let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
+      ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor[0]+';';
+    }else{                                                               // if the box is not marked 
+      currentSelecBoxes.forEach(code=>{
+        if(code == currentSelecBoxes[0]){
+          let ChessBox = document.getElementById(code);
+          ChessBox!.style.cssText = 'background-color: #BACA2B;';
+        }else{
+          this.divInside(code);
+        }
+      });
     }
   }
+  this.oldBoxesBackgroundColor = [];
+  this.oldSelectedBoxCode = currentSelecBoxes;
 }
 
 /* Search map function *****************************************************************************************************/
@@ -192,9 +231,22 @@ getByValue(map:Map<string,string>, searchValue:string) {
   }
   return '';
 }
-
-
-
+/* Create div inside boxes *************************************************************************************************************************/
+divInside(boxCode:string){
+  var div = document.createElement("div");
+  div.className= 'suggest';
+  div.style.cssText = 'height: 25px; width: 25px; background-color: #bbb; border-radius: 50%; margin-top:35%;';
+  var ChessBox = document.getElementById(boxCode);
+  ChessBox!.appendChild(div);
+}
+/* remove div inside boxes *******************************************************************************************************************/
+removeDiv(){
+  const _chessBoards = document.getElementsByClassName('suggest');
+  while(_chessBoards.length > 0){
+    _chessBoards[0]!.parentNode!.removeChild(_chessBoards[0]!);
+}
+  
+}
 
 
 }
