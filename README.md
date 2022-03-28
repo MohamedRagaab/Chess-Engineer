@@ -5,7 +5,7 @@ It is a chess game written by TypeScript, Angular
 * C# (ASP.NET Core Web API)
 * SQL (Microsoft SQL Server)
 ## Features 🥇
-* You can play with computer (comming soon)
+* You can play with computer (comming soon) -> Link: https://mohamedragaab.github.io/Chess-Engineer/
 * You can play online with a friend (comming soon)
 ## IDEs 💻
 * Visual Studio Code
