@@ -1,4 +1,4 @@
-# ChessEngineer
+# Chess Engineer
 It is a chess game written by TypeScript, Angular
 ## Languages and frameworks 📑
 * TypeScript (Angular) 
