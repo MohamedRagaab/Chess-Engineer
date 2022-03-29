@@ -28,7 +28,7 @@ It is a chess game written by TypeScript, Angular
 <hr/>
 </div>
 <div align='center'>
-<img height="460px" src="https://user-images.githubusercontent.com/38363762/160479697-e1af90a2-f134-4a94-9b1c-f5712180d299.png">
+<img height="460px" src="https://user-images.githubusercontent.com/38363762/160665763-61a02c80-d95e-47b2-840a-091c61cce0cc.png">
 <hr/>
 </div>
 
