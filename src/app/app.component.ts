@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs';
 import { chessObj } from './models/chessObj';
 
 @Component({
@@ -11,15 +12,18 @@ export class AppComponent implements OnInit {
   cssTextImg:string = 'width: 90%;height: 90%;margin-top: 4%;';
   gameStatus = new Map();                      // Status map ()
   chessBoard = new Map();                      // color of the boxes Map()
+  gamestatusWithImgSrc = new Map();            // gamestatusWithImgSrc
   gameStatusArr:string[] = [];                 // Status Arry
   gameStatusArrWhite:string[] = [];            // Status Arry White
   gameStatusArrBlack:string[] = [];            // Status Arry Black
-  playerTurn:string[]=['White','Black'];       // Player Turn
+  playerTurn:string[]=['white','black'];       // Player Turn
+  suggestedTestArr:string[] =['']; 
   indexTurn:number = 0;
   currentSelectedAndSuggestedBoxes:string[] = [];
   oldBoxesBackgroundColor:string = '';
   oldSelectedBoxCode:string[] = [''];
   _isClicked = false;
+  previousCode:string = '';
   ngOnInit(){
     this.initializeAllBox();
   }
@@ -31,7 +35,8 @@ export class AppComponent implements OnInit {
     var ChessBox = document.getElementById(boxCode);
     ChessBox!.appendChild(img);
   }
-/* Initialized Each Box ********************************************************************************************/
+
+/* Initialized Each Box ************************************************************************************************/
 initializeAllBox(){
   // color of the boxes Map()
   this.chessBoard.set("18","black");
@@ -168,7 +173,40 @@ initializeAllBox(){
   this.gameStatusArrBlack.push('68');
   this.gameStatusArrBlack.push('78');
   this.gameStatusArrBlack.push('88');
-  
+  // gamestatusWithImgSrc
+  this.gamestatusWithImgSrc.set('11','./assets/chess-rook2.png'  );
+  this.gamestatusWithImgSrc.set('21','./assets/chess-knight2.png');
+  this.gamestatusWithImgSrc.set('31','./assets/chess-bishop2.png');
+  this.gamestatusWithImgSrc.set('41','./assets/chess-queen2.png' );
+  this.gamestatusWithImgSrc.set('51','./assets/chess-king2.png'  );
+  this.gamestatusWithImgSrc.set('61','./assets/chess-bishop2.png');
+  this.gamestatusWithImgSrc.set('71','./assets/chess-knight2.png');
+  this.gamestatusWithImgSrc.set('81','./assets/chess-rook2.png'  );
+  this.gamestatusWithImgSrc.set('12','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('22','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('32','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('42','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('52','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('62','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('72','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('82','./assets/chess-pawn2.png'  );
+  this.gamestatusWithImgSrc.set('17','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('27','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('37','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('47','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('57','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('67','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('77','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('87','./assets/chess-pawn.png'   );
+  this.gamestatusWithImgSrc.set('18','./assets/chess-rook.png'   );
+  this.gamestatusWithImgSrc.set('28','./assets/chess-knight.png' );
+  this.gamestatusWithImgSrc.set('38','./assets/chess-bishop.png' );
+  this.gamestatusWithImgSrc.set('48','./assets/chess-queen.png'  );
+  this.gamestatusWithImgSrc.set('58','./assets/chess-king.png'   );
+  this.gamestatusWithImgSrc.set('68','./assets/chess-bishop.png' );
+  this.gamestatusWithImgSrc.set('78','./assets/chess-knight.png' );
+  this.gamestatusWithImgSrc.set('88','./assets/chess-rook.png'   );
+  /*
   this.boxInitialization( "./assets/chess-rook2.png","11");
   this.boxInitialization( "./assets/chess-knight2.png","21");
   this.boxInitialization( "./assets/chess-bishop2.png","31");
@@ -201,26 +239,63 @@ initializeAllBox(){
   this.boxInitialization( "./assets/chess-bishop.png","68");
   this.boxInitialization( "./assets/chess-knight.png","78");
   this.boxInitialization( "./assets/chess-rook.png","88");
+  */
+  for (let [key, value] of this.gamestatusWithImgSrc.entries()) {
+    this.boxInitialization(value,key);
+  }
 }
 
 
 /* Click Box *************************************************************************************************************/
 boxClicked(code:string){
-  if(this.gameStatusArr.includes(code)){                                                                                          // check if the selected box is chessOj or empty
-    this.getSuggestedMoves(code);
-    this.saveBackgroundColor(code);
-    this.applyStyleChangesToSuggestedMoves(this.currentSelectedAndSuggestedBoxes);                                                       
-    this.currentSelectedAndSuggestedBoxes = [];
-  }else{
-    
-    
-  }
+  console.log(code);
+  console.log(this.suggestedTestArr);
+  let objColor:string = this.getByValue(this.gameStatus,code);
+  objColor = objColor.slice(0, 5);
+  //if(objColor == this.playerTurn[this.indexTurn]){
+    if(this.gameStatusArr.includes(code)){                                                                                          // check if the selected box is chessOj or empty
+      this.getSuggestedMoves(code);
+      this.saveBackgroundColor(code);
+      this.applyStyleChangesToSuggestedMoves(this.currentSelectedAndSuggestedBoxes); 
+      this.suggestedTestArr = this.currentSelectedAndSuggestedBoxes.slice(1);                                                      
+      this.currentSelectedAndSuggestedBoxes = [];
+      console.log(this.suggestedTestArr);
+    }else if(this.suggestedTestArr.includes(code)){
+      console.log('fergany');
+      this.clearBackgroundSelected();
+      this.removeChessObj(this.previousCode);
+      let _name = this.getByKey(this.gamestatusWithImgSrc,this.previousCode);   
+      console.log(this.previousCode);
+      console.log(this.gamestatusWithImgSrc);
+      this.boxInitialization(_name,code);
+      this.suggestedTestArr = [];
+      this.updateMove(this.previousCode,code,_name);
+    }
+ // }
+  this.previousCode = code;
+}
+/* updateMove function *************************************************************************************************************/
+updateMove(previousCode:string,code:string,src:string){
+  //update Arrays
+  this.gameStatusArr.slice(this.gameStatusArr.indexOf(previousCode),1);
+  this.gameStatusArr.push(code);
+  this.gameStatusArrBlack.slice(this.gameStatusArrBlack.indexOf(previousCode),1);
+  this.gameStatusArrBlack.push(code);
+
+  this.gameStatusArrWhite.slice(this.gameStatusArrWhite.indexOf(previousCode),1);
+  this.gameStatusArrWhite.push(code);
+  //update Maps
+  this.gamestatusWithImgSrc.set(code,src);
+  this.gamestatusWithImgSrc.delete(previousCode);
+  
+  this.gameStatus.set(this.getByValue(this.gameStatus,previousCode),code);
+  //this.gameStatus.delete(this.getByValue(this.gameStatus,previousCode));
 
 }
 /* getSuggestedMoves function *****************************************************************************************************/
 getSuggestedMoves(code:string){
   this.currentSelectedAndSuggestedBoxes.push(code);
-  let _name = this.getByValue(this.gameStatus,code)!;                                                                         // search for the name of the clicked chessObj in the game status map()
+  let _name = this.getByValue(this.gameStatus,code);                                                                         // search for the name of the clicked chessObj in the game status map()
   let _chessOj = new chessObj(_name,parseInt(code),this.gameStatusArr,this.gameStatusArrWhite,this.gameStatusArrBlack);       // create chessObj
   _chessOj.suggestedMoves();      
   _chessOj.getSuggestedMoves().forEach(suggCode => {                                                                          // returnd suggested boxes
@@ -239,11 +314,7 @@ saveBackgroundColor(code:string){
 applyStyleChangesToSuggestedMoves(currentSelecBoxes:string[]){
   
   if(currentSelecBoxes[0] != this.oldSelectedBoxCode[0]){                                                      // check the selected box is not the previous box
-    if((this.oldSelectedBoxCode[0]!='' )){                                                                     // clear Background Selected when change selection from box to another
-      this.removeDiv();
-      let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
-      ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor[0]+';';                     
-    }
+    this.clearBackgroundSelected();
     currentSelecBoxes.forEach(code=>{                                                                         // mark the suggested boxes
       if(code == currentSelecBoxes[0]){
         let ChessBox = document.getElementById(code);
@@ -254,7 +325,6 @@ applyStyleChangesToSuggestedMoves(currentSelecBoxes:string[]){
     });
   }else{ // if we clicked the same box
     let ChessBox = document.getElementById(currentSelecBoxes[0]);
-    console.log(ChessBox!.style.backgroundColor);
     if(ChessBox!.style.backgroundColor=='rgb(186, 202, 43)'){               // check the status of the box if it is marked
       this.removeDiv();
       let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
@@ -273,14 +343,29 @@ applyStyleChangesToSuggestedMoves(currentSelecBoxes:string[]){
   this.oldBoxesBackgroundColor = '';
   this.oldSelectedBoxCode = currentSelecBoxes;
 }
-
-/* Search map function *****************************************************************************************************/
+/* clearBackgroundSelected function ***************************************************************************************************************************/
+clearBackgroundSelected(){
+  if((this.oldSelectedBoxCode[0]!='' )){                                                                     // clear Background Selected when change selection from box to another
+    this.removeDiv();
+    let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
+    ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor[0]+';';                     
+  }
+}
+/* Search map function ***************************************************************************************************************************/
 getByValue(map:Map<string,string>, searchValue:string) {
   for (let [key, value] of map.entries()) {
     if (value === searchValue)
       return key;
   }
-  return '';
+  return 'a7a';
+}
+/* Search map function ***************************************************************************************************************************/
+getByKey(map:Map<string,string>, _key:string) {
+  for (let [key, value] of map.entries()) {
+    if (key === _key)
+      return value;
+  }
+  return 'a7a';
 }
 /* Create div inside boxes *************************************************************************************************************************/
 divInside(boxCode:string){
@@ -299,6 +384,11 @@ removeDiv(){
   
 }
 
+/* remove chessObj from old box *******************************************************************************************************************/
+removeChessObj(code:string){
+  const _chessBoards = document.getElementById(code);
+    _chessBoards!.removeChild(_chessBoards!.firstChild!);  
+}
 
 }
 
