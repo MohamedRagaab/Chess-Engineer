@@ -9,11 +9,15 @@ import { chessObj } from './models/chessObj';
 export class AppComponent implements OnInit {
   title = 'Chess-Engineer';
   cssTextImg:string = 'width: 90%;height: 90%;margin-top: 4%;';
-  gameStatus = new Map();
-  chessBoard = new Map();
-  gameStatusArr:string[] = [];
+  gameStatus = new Map();                      // Status map ()
+  chessBoard = new Map();                      // color of the boxes Map()
+  gameStatusArr:string[] = [];                 // Status Arry
+  gameStatusArrWhite:string[] = [];            // Status Arry White
+  gameStatusArrBlack:string[] = [];            // Status Arry Black
+  playerTurn:string[]=['White','Black'];       // Player Turn
+  indexTurn:number = 0;
   currentSelectedAndSuggestedBoxes:string[] = [];
-  oldBoxesBackgroundColor:string[] = [];
+  oldBoxesBackgroundColor:string = '';
   oldSelectedBoxCode:string[] = [''];
   _isClicked = false;
   ngOnInit(){
@@ -29,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 /* Initialized Each Box ********************************************************************************************/
 initializeAllBox(){
-
+  // color of the boxes Map()
   this.chessBoard.set("18","black");
   this.chessBoard.set("28","white");
   this.chessBoard.set("38","black");
@@ -94,8 +98,9 @@ initializeAllBox(){
   this.chessBoard.set("61","black");
   this.chessBoard.set("71","white");
   this.chessBoard.set("81","black");
-
+  // Status Arry
   this.gameStatusArr.push('11','21','31','41','51','61','71','81','12','22','32','42','52','62','72','82','17','27','37','47','57','67','77','87','18','28','38','48','58','68','78','88');
+  // Status map ()
   this.gameStatus.set('whit-rook1','11');
   this.gameStatus.set('white-knight1','21');
   this.gameStatus.set('white-bishop1','31');
@@ -112,6 +117,7 @@ initializeAllBox(){
   this.gameStatus.set('white-pawn6','62');
   this.gameStatus.set('white-pawn7','72');
   this.gameStatus.set('white-pawn8','82');
+
   this.gameStatus.set('black-pawn1','17');
   this.gameStatus.set('black-pawn2','27');
   this.gameStatus.set('black-pawn3','37');
@@ -128,7 +134,41 @@ initializeAllBox(){
   this.gameStatus.set('black-bishop2','68');
   this.gameStatus.set('black-knight2','78');
   this.gameStatus.set('black-rook2','88');
-
+  // Status Arry White
+  this.gameStatusArrWhite.push('11');
+  this.gameStatusArrWhite.push('21');
+  this.gameStatusArrWhite.push('31');
+  this.gameStatusArrWhite.push('41');
+  this.gameStatusArrWhite.push('51');
+  this.gameStatusArrWhite.push('61');
+  this.gameStatusArrWhite.push('71');
+  this.gameStatusArrWhite.push('81');
+  this.gameStatusArrWhite.push('12');
+  this.gameStatusArrWhite.push('22');
+  this.gameStatusArrWhite.push('32');
+  this.gameStatusArrWhite.push('42');
+  this.gameStatusArrWhite.push('52');
+  this.gameStatusArrWhite.push('62');
+  this.gameStatusArrWhite.push('72');
+  this.gameStatusArrWhite.push('82');
+// Status Arry Black
+  this.gameStatusArrBlack.push('17');
+  this.gameStatusArrBlack.push('27');
+  this.gameStatusArrBlack.push('37');
+  this.gameStatusArrBlack.push('47');
+  this.gameStatusArrBlack.push('57');
+  this.gameStatusArrBlack.push('67');
+  this.gameStatusArrBlack.push('77');
+  this.gameStatusArrBlack.push('87');
+  this.gameStatusArrBlack.push('18');
+  this.gameStatusArrBlack.push('28');
+  this.gameStatusArrBlack.push('38');
+  this.gameStatusArrBlack.push('48');
+  this.gameStatusArrBlack.push('58');
+  this.gameStatusArrBlack.push('68');
+  this.gameStatusArrBlack.push('78');
+  this.gameStatusArrBlack.push('88');
+  
   this.boxInitialization( "./assets/chess-rook2.png","11");
   this.boxInitialization( "./assets/chess-knight2.png","21");
   this.boxInitialization( "./assets/chess-bishop2.png","31");
@@ -162,30 +202,41 @@ initializeAllBox(){
   this.boxInitialization( "./assets/chess-knight.png","78");
   this.boxInitialization( "./assets/chess-rook.png","88");
 }
+
+
 /* Click Box *************************************************************************************************************/
 boxClicked(code:string){
-  if(this.gameStatusArr.includes(code)){
-    this.currentSelectedAndSuggestedBoxes.push(code);
-      let _name = this.getByValue(this.gameStatus,code)!;                         // search for the name of the clicked chessObj
-      let _chessOj = new chessObj(_name,parseInt(code),this.gameStatusArr);       // create chessObj
-      _chessOj.suggestedMoves();      
-      _chessOj.getSuggestedMoves().forEach(suggCode => {                          // returnd suggested boxes
-        this.currentSelectedAndSuggestedBoxes.push(suggCode);
-      });
-     if(code != this.oldSelectedBoxCode[0]){ this._isClicked=true}else{this._isClicked=false}
-     if(this._isClicked){
-        this.currentSelectedAndSuggestedBoxes.forEach(box => {
-          let ChessBox = document.getElementById(box);
-          this.oldBoxesBackgroundColor.push(ChessBox!.style.backgroundColor);       // save backgroundColor
-        });
-      }
-      this.changeBackgroundColor(this.currentSelectedAndSuggestedBoxes);
-      this.currentSelectedAndSuggestedBoxes = [];
-
+  if(this.gameStatusArr.includes(code)){                                                                                          // check if the selected box is chessOj or empty
+    this.getSuggestedMoves(code);
+    this.saveBackgroundColor(code);
+    this.applyStyleChangesToSuggestedMoves(this.currentSelectedAndSuggestedBoxes);                                                       
+    this.currentSelectedAndSuggestedBoxes = [];
+  }else{
+    
+    
   }
+
 }
-/* changeBackgroundColor function *****************************************************************************************************/
-changeBackgroundColor(currentSelecBoxes:string[]){
+/* getSuggestedMoves function *****************************************************************************************************/
+getSuggestedMoves(code:string){
+  this.currentSelectedAndSuggestedBoxes.push(code);
+  let _name = this.getByValue(this.gameStatus,code)!;                                                                         // search for the name of the clicked chessObj in the game status map()
+  let _chessOj = new chessObj(_name,parseInt(code),this.gameStatusArr,this.gameStatusArrWhite,this.gameStatusArrBlack);       // create chessObj
+  _chessOj.suggestedMoves();      
+  _chessOj.getSuggestedMoves().forEach(suggCode => {                                                                          // returnd suggested boxes
+    this.currentSelectedAndSuggestedBoxes.push(suggCode);
+  });
+}
+/* saveBackgroundColor function *****************************************************************************************************/
+saveBackgroundColor(code:string){
+  if(code != this.oldSelectedBoxCode[0]){ this._isClicked=true}else{this._isClicked=false}
+  if(this._isClicked){
+        let ChessBox = document.getElementById(this.currentSelectedAndSuggestedBoxes[0]);
+        this.oldBoxesBackgroundColor = ChessBox!.style.backgroundColor ;                                                     // save backgroundColor
+    }
+}
+/* applyStyleChangesToSuggestedMoves function *****************************************************************************************************/
+applyStyleChangesToSuggestedMoves(currentSelecBoxes:string[]){
   
   if(currentSelecBoxes[0] != this.oldSelectedBoxCode[0]){                                                      // check the selected box is not the previous box
     if((this.oldSelectedBoxCode[0]!='' )){                                                                     // clear Background Selected when change selection from box to another
@@ -207,7 +258,7 @@ changeBackgroundColor(currentSelecBoxes:string[]){
     if(ChessBox!.style.backgroundColor=='rgb(186, 202, 43)'){               // check the status of the box if it is marked
       this.removeDiv();
       let ChessBox = document.getElementById(this.oldSelectedBoxCode[0]); 
-      ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor[0]+';';
+      ChessBox!.style.cssText = 'background-color:'+this.oldBoxesBackgroundColor+';';
     }else{                                                               // if the box is not marked 
       currentSelecBoxes.forEach(code=>{
         if(code == currentSelecBoxes[0]){
@@ -219,7 +270,7 @@ changeBackgroundColor(currentSelecBoxes:string[]){
       });
     }
   }
-  this.oldBoxesBackgroundColor = [];
+  this.oldBoxesBackgroundColor = '';
   this.oldSelectedBoxCode = currentSelecBoxes;
 }
 
@@ -235,7 +286,7 @@ getByValue(map:Map<string,string>, searchValue:string) {
 divInside(boxCode:string){
   var div = document.createElement("div");
   div.className= 'suggest';
-  div.style.cssText = 'height: 25px; width: 25px; background-color: #bbb; border-radius: 50%; margin-top:35%;';
+  div.style.cssText = 'height: 25px; width: 25px; background-color: #BACA2B; border-radius: 50%; margin-top:35%; position:absolute;';
   var ChessBox = document.getElementById(boxCode);
   ChessBox!.appendChild(div);
 }
