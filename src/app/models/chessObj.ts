@@ -41,19 +41,19 @@ export class chessObj {
   }
   /* Pawn Moves ****************************************************************************/
   WhitePawnMoves(){
-      if(!(this._gameStatus.includes((this._location+1).toString()))){
-        if(this.checkConstrains(this._location+1))  // check Constrain 
-        this._suggestedMoves.push((this._location+1).toString());
-      }
-      if(!(this._gameStatus.includes((this._location+2).toString()))){
-        if(this.checkConstrains(this._location+2))  // check Constrain 
-        this._suggestedMoves.push((this._location+2).toString());
-      }
-      if((this._gameStatus.includes((this._location-9).toString()))){
+        if(!(this._gameStatus.includes((this._location+1).toString()))){
+          if(this.checkConstrains(this._location+1))  // check Constrain 
+          this._suggestedMoves.push((this._location+1).toString());
+        }
+        if(!(this._gameStatus.includes((this._location+2).toString())) && (!(this._gameStatus.includes((this._location+1).toString()))) &&(parseInt(this._location.toString()[1]))<3){
+          if(this.checkConstrains(this._location+2))  // check Constrain 
+          this._suggestedMoves.push((this._location+2).toString());
+        }
+      if(this._gameStatusBlack.includes((this._location-9).toString())){
         if(this.checkConstrains(this._location-9))  // check Constrain 
         this._suggestedMoves.push((this._location-9).toString());
       }
-      if((this._gameStatus.includes((this._location+11).toString()))){
+      if( this._gameStatusBlack.includes((this._location+11).toString())){
         if(this.checkConstrains(this._location+11))  // check Constrain 
         this._suggestedMoves.push((this._location+11).toString());
       }
@@ -64,15 +64,15 @@ export class chessObj {
         if(this.checkConstrains(this._location-1))  // check Constrain 
         this._suggestedMoves.push((this._location-1).toString());
       }
-      if(!(this._gameStatus.includes((this._location-2).toString()))){
+      if(!(this._gameStatus.includes((this._location-2).toString())) && (!(this._gameStatus.includes((this._location-1).toString()))) && (parseInt(this._location.toString()[1]))>6){
         if(this.checkConstrains(this._location-2))  // check Constrain 
         this._suggestedMoves.push((this._location-2).toString());
       }
-      if((this._gameStatus.includes((this._location+9).toString()))){
+      if(this._gameStatusWhite.includes((this._location+9).toString())){
         if(this.checkConstrains(this._location+9))  // check Constrain
         this._suggestedMoves.push((this._location+9).toString());
       }
-      if((this._gameStatus.includes((this._location-11).toString()))){
+      if(this._gameStatusWhite.includes((this._location-11).toString())){
         if(this.checkConstrains(this._location-11))  // check Constrain
         this._suggestedMoves.push((this._location-11).toString());
       }
