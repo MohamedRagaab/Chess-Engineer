@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { map } from 'rxjs';
 import { GameFunctions } from './Controller/game_functions';
 import { InitializeAllBox } from './Controller/game_initialization';
@@ -10,6 +11,12 @@ import { chessObj } from './models/chessObj';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  // firebase Database
+  constructor(db:AngularFireDatabase){
+    db.list('/Game').valueChanges().forEach(element => {
+      console.log(element);
+    });
+  }
   title = 'Chess-Engineer';
   cssTextImg:string = 'width: 90%;height: 90%;margin-top: 4%;';
   gameStatus = new Map();                      // Status map ()

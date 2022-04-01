@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyApusGzreMmPVkoxtcxiJjsDPjF91ZuRms",
+    authDomain: "chess-engineer.firebaseapp.com",
+    databaseURL: "https://chess-engineer-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "chess-engineer",
+    storageBucket: "chess-engineer.appspot.com",
+    messagingSenderId: "481214538885",
+    appId: "1:481214538885:web:07e1c92f27008a9c8af5ec",
+    measurementId: "G-L8R6HFW19E"
+  }
 };
 
 /*
